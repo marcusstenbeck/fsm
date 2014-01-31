@@ -75,7 +75,7 @@ FSM.prototype.triggerEvent = function(eventName) {
 	};
 
 	// Couldn't find the state...
-	console.error('State ', this.state.name, 'could not transition to state', nextState, ': It does not exist');
+	console.error('State', this.state.name, 'could not transition to state', nextState, ': It does not exist');
 	return this;
 };
 FSM.prototype.createState = function(name) {
