@@ -31,13 +31,14 @@ State.prototype.onExit = function(fn) {
  *
  */
 function FSM(params) {
+	this.parent = params.parent || null;
 	this.state = params.startState || new State('State 1');
 	this.states = params.states || [this.state];
 
 	// TODO: DRY this up
 	// Run starting states entry actions
 	for (var j = this.state.actions.onEnter.length - 1; j >= 0; j--) {
-		if(typeof this.state.actions.onEnter[j] === 'function') this.state.actions.onEnter[j]();
+		if(typeof this.state.actions.onEnter[j] === 'function') this.state.actions.onEnter[j](this.parent);
 	};
 }
 FSM.prototype.triggerEvent = function(eventName) {
@@ -58,7 +59,7 @@ FSM.prototype.triggerEvent = function(eventName) {
 			
 			// perform the exit actions of current state
 			for (var j = this.state.actions.onExit.length - 1; j >= 0; j--) {
-				if(typeof this.state.actions.onExit[j] === 'function') this.state.actions.onExit[j]();
+				if(typeof this.state.actions.onExit[j] === 'function') this.state.actions.onExit[j](this.parent);
 			};
 
 			// Switch to next state
@@ -66,7 +67,7 @@ FSM.prototype.triggerEvent = function(eventName) {
 
 			// perform the entry actions of current state
 			for (var j = this.state.actions.onEnter.length - 1; j >= 0; j--) {
-				if(typeof this.state.actions.onEnter[j] === 'function') this.state.actions.onEnter[j]();
+				if(typeof this.state.actions.onEnter[j] === 'function') this.state.actions.onEnter[j](this.parent);
 			};
 
 			return;
@@ -74,7 +75,7 @@ FSM.prototype.triggerEvent = function(eventName) {
 	};
 
 	// Couldn't find the state...
-	console.error('State ', this.state.name, 'could not transition to state', nextState, ': It does not exist');
+	console.error('State', this.state.name, 'could not transition to state', nextState, ': It does not exist');
 	return this;
 };
 FSM.prototype.createState = function(name) {
