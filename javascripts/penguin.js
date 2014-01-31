@@ -25,7 +25,7 @@ function createRocket() {
 	// Set color
 	aRocket.color = 'rgba(0,255,0,1);'
 
-	aRocket.bmp = '/res/p'+Math.floor(Math.random()*4 +1)+'.jpg';
+	aRocket.bmp = '/fsm/res/p'+Math.floor(Math.random()*4 +1)+'.jpg';
 
 	// Create state machine
 	aRocket.fsm = new FSM({
@@ -70,7 +70,7 @@ function createRocket() {
 						x: randX,
 						y: randY
 					},
-					bmp: '/res/p'+Math.floor(Math.random()*4 +1)+'.jpg',
+					bmp: '/fsm/res/p'+Math.floor(Math.random()*4 +1)+'.jpg',
 					color: 'rgba(' + Math.floor(255*Math.random()) + ',' + Math.floor(255*Math.random()) + ',' + Math.floor(255*Math.random()) + ',1)',
 					script: function() {
 						this.pos.x += this.vel.x;
