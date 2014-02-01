@@ -12,11 +12,8 @@ define(['./State'], function(State) {
 		this.state = params.startState || new State('State 1');
 		this.states = params.states || [this.state];
 
-		// TODO: DRY this up
 		// Run starting states entry actions
-		for (var j = this.state.actions.onEnter.length - 1; j >= 0; j--) {
-			if(typeof this.state.actions.onEnter[j] === 'function') this.state.actions.onEnter[j](this.parent);
-		};
+		this.enterState(this.state.name);
 	}
 
 	FSM.prototype.triggerEvent = function(eventName) {
@@ -71,14 +68,6 @@ define(['./State'], function(State) {
 		// Couldn't find the state...
 		console.error('State', this.state.name, 'could not transition to state', nextState, ': It does not exist');
 		return this;
-	};
-	FSM.prototype.createState = function(name) {
-		var state = new State(name);
-		this.states.push(state);
-		return state;
-	};
-	FSM.prototype.deleteState = function(stateName) {
-		if(typeof this.states[stateName] === 'Object') delete this.states[stateName];
 	};
 
 	return FSM;
