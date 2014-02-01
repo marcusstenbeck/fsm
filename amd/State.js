@@ -1,4 +1,4 @@
-define('State', [], function() {
+define([], function() {
 	/**
 	 * A state. It's just data.
 	 */
