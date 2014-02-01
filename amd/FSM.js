@@ -7,6 +7,7 @@ define(['./State'], function(State) {
 	 *
 	 */
 	function FSM(params) {
+		if(!params) params = {};
 		this.parent = params.parent || null;
 		this.state = params.startState || new State('State 1');
 		this.states = params.states || [this.state];
