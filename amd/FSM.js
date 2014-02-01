@@ -1,4 +1,4 @@
-define('FSM', ['State'], function(State) {
+define(['./State'], function(State) {
 	/**
 	 * State machine. It changes states, and it runs the enter and exit actions in the states.
 	 *
@@ -24,7 +24,7 @@ define('FSM', ['State'], function(State) {
 
 		// No transition? Then warn and gettouttahere!
 		if(!nextState) {
-			console.warn('State ', this.state.name, 'has no transition for event', eventName);
+			console.warn('State', this.state.name, 'has no transition for event', eventName);
 			return this;
 		}
 
