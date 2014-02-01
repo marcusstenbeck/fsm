@@ -8,7 +8,7 @@ define(['./State'], function(State) {
 	 */
 	function FSM(params) {
 		if(!params) params = {};
-		this.parent = params.parent || null;
+		this.owner = params.owner || null;
 		this.state = params.startState || new State('State 1');
 		this.states = params.states || [this.state];
 
@@ -18,6 +18,7 @@ define(['./State'], function(State) {
 			if(typeof this.state.actions.onEnter[j] === 'function') this.state.actions.onEnter[j](this.parent);
 		};
 	}
+
 	FSM.prototype.triggerEvent = function(eventName) {
 		// Check if current state will exit on this event
 
@@ -29,14 +30,30 @@ define(['./State'], function(State) {
 			return this;
 		}
 
+		this.enterState(nextState.name);
 
-		// Transition exists... find the state and go to it!
+		return this;
+	};
+	
+	FSM.prototype.createState = function(name) {
+		var state = new State(name);
+		this.states.push(state);
+		return state;
+	};
+	
+	FSM.prototype.deleteState = function(stateName) {
+		if(typeof this.states[stateName] === 'Object') delete this.states[stateName];
+	};
+
+	FSM.prototype.enterState = function(nextState) {
+		if(this.state.name == nextState) return;
+
 		for (var i = this.states.length - 1; i >= 0; i--) {
 			if(this.states[i].name == nextState) {
 				
 				// perform the exit actions of current state
 				for (var j = this.state.actions.onExit.length - 1; j >= 0; j--) {
-					if(typeof this.state.actions.onExit[j] === 'function') this.state.actions.onExit[j](this.parent);
+					if(typeof this.state.actions.onExit[j] === 'function') this.state.actions.onExit[j](this.owner);
 				};
 
 				// Switch to next state
@@ -44,7 +61,7 @@ define(['./State'], function(State) {
 
 				// perform the entry actions of current state
 				for (var j = this.state.actions.onEnter.length - 1; j >= 0; j--) {
-					if(typeof this.state.actions.onEnter[j] === 'function') this.state.actions.onEnter[j](this.parent);
+					if(typeof this.state.actions.onEnter[j] === 'function') this.state.actions.onEnter[j](this.owner);
 				};
 
 				return;
