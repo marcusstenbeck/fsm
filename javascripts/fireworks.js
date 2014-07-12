@@ -96,6 +96,9 @@ document.getElementById('thebutton').addEventListener('click', function(e) {
 	objects.push(createRocket());
 });
 
+// Automatically click the button once
+document.getElementById('thebutton').dispatchEvent(new MouseEvent('click'));
+
 
 
 // ** UPDATE & RENDER EVERYTHING ** //
