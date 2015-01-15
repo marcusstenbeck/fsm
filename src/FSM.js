@@ -2,14 +2,14 @@ define(['./State'], function(State) {
 	/**
 	 * State machine. It changes states, and it runs the enter and exit actions in the states.
 	 *
-	 * param.startState {State} The starting state. Default: new State('State 1')
+	 * param.startState {State} The starting state. Default: new State('init')
 	 * param.states {[State]} An array of states
 	 *
 	 */
 	function FSM(params) {
 		if(!params) params = {};
 		this.owner = params.owner || null;
-		this.state = params.startState || new State('State 1');
+		this.state = params.startState || new State('init');
 		this.states = params.states || [this.state];
 
 		// Run starting states entry actions
