@@ -1,0 +1,8 @@
+{
+	"globals": {
+		"requirejs": false,
+		"define": false,
+		"console": false,
+		"window": false
+	}
+}
