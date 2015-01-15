@@ -1,4 +1,6 @@
 define(['./State'], function(State) {
+	'use strict';
+
 	/**
 	 * State machine. It changes states, and it runs the enter and exit actions in the states.
 	 *
@@ -19,15 +21,15 @@ define(['./State'], function(State) {
 	FSM.prototype.triggerEvent = function(eventName) {
 		// Check if current state will exit on this event
 
-		var nextState = this.state.transitions[eventName];
+		var nextStateName = this.state.transitions[eventName];
 
 		// No transition? Then warn and gettouttahere!
-		if(!nextState) {
+		if(!nextStateName) {
 			console.warn('State', this.state.name, 'has no transition for event', eventName);
 			return this;
 		}
 
-		this.enterState(nextState.name);
+		this.enterState(nextStateName);
 
 		return this;
 	};
@@ -39,34 +41,34 @@ define(['./State'], function(State) {
 	};
 	
 	FSM.prototype.deleteState = function(stateName) {
-		if(typeof this.states[stateName] === 'Object') delete this.states[stateName];
+		if(typeof this.states[stateName] === 'object') delete this.states[stateName];
 	};
 
-	FSM.prototype.enterState = function(nextState) {
-		if(this.state.name == nextState) return;
+	FSM.prototype.enterState = function(nextStateName) {
+		if(this.state.name === nextStateName) return;
 
-		for (var i = this.states.length - 1; i >= 0; i--) {
-			if(this.states[i].name == nextState) {
+		for(var i = 0; i < this.states.length; i++) {
+			if(this.states[i].name === nextStateName) {
 				
 				// perform the exit actions of current state
-				for (var j = this.state.actions.onExit.length - 1; j >= 0; j--) {
-					if(typeof this.state.actions.onExit[j] === 'function') this.state.actions.onExit[j](this.owner);
-				};
+				for(var j = 0; j < this.states[i].actions.onExit.length; j++) {
+					if(typeof this.states[i].actions.onExit[j] === 'function') this.states[i].actions.onExit[j](this.owner);
+				}
 
 				// Switch to next state
 				this.state = this.states[i];
 
 				// perform the entry actions of current state
-				for (var j = this.state.actions.onEnter.length - 1; j >= 0; j--) {
-					if(typeof this.state.actions.onEnter[j] === 'function') this.state.actions.onEnter[j](this.owner);
-				};
+				for(j = 0; j < this.states[i].actions.onEnter.length; j++) {
+					if(typeof this.states[i].actions.onEnter[j] === 'function') this.states[i].actions.onEnter[j](this.owner);
+				}
 
 				return;
 			}
-		};
+		}
 
 		// Couldn't find the state...
-		console.error('State', this.state.name, 'could not transition to state', nextState, ': It does not exist');
+		console.error('State', this.state.name, 'could not transition to state', nextStateName, ': It does not exist');
 		return this;
 	};
 

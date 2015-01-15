@@ -1,4 +1,6 @@
 define([], function() {
+	'use strict';
+
 	/**
 	 * A state. It's just data.
 	 */
